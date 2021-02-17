@@ -19,7 +19,14 @@ exports.up = function (knex) {
       tbl.increments("id");
       tbl.text("animal_name").notNullable();
       //the line below creates a foreign key
-      tbl.integer("species_id").references("id").inTable("species");
+      tbl
+        .integer("species_id")
+        .references("id")
+        .inTable("species")
+        //reference option
+        //when the foreing key being pointed gets deleted
+        //set the value of this column to null
+        .onDelete("SET NULL");
     })
     .createTable("zoos_animals", (tbl) => {
       tbl.integer("zoo_id").references("id").inTable("zoos").notNullable();
@@ -27,7 +34,12 @@ exports.up = function (knex) {
         .integer("animal_id")
         .references("id")
         .inTable("animals")
-        .notNullable();
+        .notNullable()
+        //reference option
+        //when the foreing key being pointed gets deleted
+        //all the references that were using the value of this deleted
+        //column will ber deleted too
+        .onDelete("CASCADE");
       //knex.raw will pass 'current_timestamp' without quotes,
       //meaning it's an internal SQL variable and not a
       //literal string
