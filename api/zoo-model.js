@@ -23,7 +23,13 @@ function findAnimals(zooId) {
       //   .where("za.zoo_id", zooId)
       //or
       .where("z.id", zooId)
-      //select specif columsn to show
-      .select("a.*", "z.zoo_name", "s.species_name")
+      //select specific column to show
+      .select(
+        "a.id",
+        "a.animal_name",
+        "s.species_name",
+        "za.from_date",
+        "za.to_date"
+      )
   );
 }
