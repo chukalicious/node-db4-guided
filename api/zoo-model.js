@@ -18,11 +18,12 @@ function findAnimals(zooId) {
       //and the zoo animal id
       .join("zoos as z", "z.id", "za.zoo_id")
       .join("animals as a", "a.id", "za.animal_id")
+      .join("species as s", "s.id", "a.species_id")
       //filter based on the zooId
       //   .where("za.zoo_id", zooId)
       //or
       .where("z.id", zooId)
       //select specif columsn to show
-      .select("a.*", "z.zoo_name")
+      .select("a.*", "z.zoo_name", "s.species_name")
   );
 }
