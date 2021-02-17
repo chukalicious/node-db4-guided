@@ -3,6 +3,8 @@ const helmet = require("helmet");
 
 const db = require("../data/db-config.js");
 
+const ZooAnimals = require("./zoo-model");
+
 const server = express();
 
 server.use(helmet());
@@ -22,6 +24,20 @@ server.get("/api/species", (req, res) => {
 server.get("/api/zoos", async (req, res) => {
   const zoos = await db("zoos");
   res.status(200).json(zoos);
+});
+
+server.get("/api/zoos/:id/animals", async (req, res) => {
+  const { id } = req.params;
+  const animalInZoo = await ZooAnimals.findAnimals(id);
+  if (!animalInZoo) {
+    res.status(404).json({ message: "there's no animal by that Id" });
+  } else {
+    try {
+      res.status(200).json(animalInZoo);
+    } catch (err) {
+      res.status(500).json({ message: "server error", error: err.message });
+    }
+  }
 });
 
 server.get("/api/animals", (req, res) => {
